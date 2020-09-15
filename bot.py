@@ -11,9 +11,9 @@ def welcome(message):
     
     #keyboard
     markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
-    item1 = types.KeyboardButton("Order food")
-    item2 = types.KeyboardButton("Check the menu")
-    markup.add(item1, item2)
+    order = types.KeyboardButton("Order food")
+    check = types.KeyboardButton("Check the menu")
+    markup.add(order, check)
     bot.send_message(message.chat.id,"Welcome, {0.first_name}!\n ".format(message.from_user, bot.get_me()), 
     parse_mode='html', reply_markup = markup)
     
@@ -24,10 +24,10 @@ def echo(message):
             bot.send_message(message.chat.id, 'No food')
         elif message.text == 'Check the menu':
             markup = types.InlineKeyboardMarkup(row_width = 2)
-            item1 = types.InlineKeyboardButton("General menu", callback_data ='General')
-            item2 = types.InlineKeyboardButton("Kids menu", callback_data ='Kids')
-            item3 = types.InlineKeyboardButton("Vegetarian menu", callback_data ='Vegetarian')
-            markup.add(item1, item2, item3)
+            genBut = types.InlineKeyboardButton("General menu", callback_data ='General')
+            kidBut = types.InlineKeyboardButton("Kids menu", callback_data ='Kids')
+            vegBut = types.InlineKeyboardButton("Vegetarian menu", callback_data ='Vegetarian')
+            markup.add(genBut, kidBut, vegBut)
             bot.send_message(message.chat.id, 'Choose', reply_markup = markup)
         else:
             bot.send_message(message.chat.id, 'Bye')
@@ -43,11 +43,12 @@ def callback_inline(call):
                         bot.send_message(call.message.chat.id, 'Oops, it is not available yet')
                                
                     #remove inline buttons
-                    bot.edit_message_text(chat_id = call.message.chat.id, message_id=call.message.message_id, text="Check the menu", reply_markup = None)
+                    bot.edit_message_text(chat_id = call.message.chat.id, message_id=call.message.message_id,  
+                    text="Check the menu", reply_markup = None)
                     #show alert
                     bot.answer_callback_query(chat_id = call.message.chat.id)
                     bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                text="text alert")
+                    text="text alert")
             except Exception as e:
                 print(repr(e))
  
